@@ -4,7 +4,7 @@ import pygame
 visible = True
 gamesize = 20
 tile_size = 50
-control_type = "PLAYER" # "PLAYER"
+control_type = "PLAYER" # "AI"
 
 color_dict = {
     0: (0, 0, 0), # black for empty field
@@ -27,14 +27,16 @@ if __name__ == "__main__":
                     running = False
                 # key is pressed
                 if event.type == pygame.KEYDOWN:
+
                     if event.key == pygame.K_UP:
-                        print(game.inputMove("up"))
+                        game.inputMove("up")
                     elif event.key == pygame.K_DOWN:
-                        print(game.inputMove("down"))
+                        game.inputMove("down")
                     elif event.key == pygame.K_LEFT:
-                        print(game.inputMove("left"))
+                        game.inputMove("left")
                     elif event.key == pygame.K_RIGHT:
-                        print(game.inputMove("right"))
+                        game.inputMove("right")
+
                 board = game.getGamestate()
                 for y_coord, row in enumerate(board):
                     for x_coord, element in enumerate(row):

@@ -15,3 +15,4 @@ def to_onehot(num: int, size: int) -> torch.tensor:
     onehot = torch.zeros(size)
     onehot[num] = 1
     return onehot
+    

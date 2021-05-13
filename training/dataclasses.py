@@ -23,7 +23,7 @@ class ReplayMemory(object):
         states, actions, rewards = zip(*self.memory)
         rewards = torch.FloatTensor(rewards)
 
-        # values for calculating q values in form of gamma**i for steps the reward is away
+        # values for calculating q values in form of gamma**i for i = steps the reward is away
         q_values_coeffs = torch.FloatTensor([self.gamma ** i for i in range(len(rewards))])
         q_values = []
 
@@ -35,5 +35,6 @@ class ReplayMemory(object):
         self.reset()
         return states, actions, q_values
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.memory)
+        

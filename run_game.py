@@ -28,18 +28,17 @@ if __name__ == "__main__":
                 # key is pressed
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
-                        game.inputMove("up")
+                        print(game.inputMove("up"))
                     elif event.key == pygame.K_DOWN:
-                        game.inputMove("down")
+                        print(game.inputMove("down"))
                     elif event.key == pygame.K_LEFT:
-                        game.inputMove("left")
+                        print(game.inputMove("left"))
                     elif event.key == pygame.K_RIGHT:
-                        game.inputMove("right")
+                        print(game.inputMove("right"))
                 board = game.getGamestate()
-                print(board)
                 for y_coord, row in enumerate(board):
                     for x_coord, element in enumerate(row):
-                        color = color_dict[element]
+                        color = color_dict[int(element)]
                         rect_x, rect_y = x_coord * tile_size, y_coord * tile_size
                         pygame.draw.rect(screen, color, [rect_x, rect_y, tile_size, tile_size])
 

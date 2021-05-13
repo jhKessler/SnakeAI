@@ -1,4 +1,4 @@
-import numpy as np
+import torch
 from random import randint
 
 class Board(object):
@@ -20,9 +20,9 @@ class Board(object):
         return randint(0, size-1), randint(0, size-1)
 
     @staticmethod
-    def createBoard(size) -> np.ndarray:
+    def createBoard(size) -> torch.tensor:
         """Creates an empty Board"""
-        return np.ones((size, size))
+        return torch.ones((size, size))
 
     def __init__(self, size: int, positions: list):
         """Creates a board object"""
@@ -33,9 +33,9 @@ class Board(object):
     def reset(self, positions: list):
         """Resets the board to a starting state"""
         self.board = Board.createBoard(self.size)
-        self.applyPositions(positions, True)
+        self.applyPositions(positions, reset=True)
 
-    def access(self, x: int, y: int) -> np.ndarray:
+    def access(self, x: int, y: int) -> torch.tensor:
         """Returns the board value at a specified coordinate"""
         return self.board[y][x]
 
@@ -53,13 +53,13 @@ class Board(object):
             random_x, random_y = Board.randomCoordinates(self.size)
         self.setState(random_x, random_y, "apple")
 
-    def getState(self) -> np.ndarray:
+    def getState(self) -> torch.tensor:
         """Returns the current state of the board"""
         return self.board
 
     def appleEaten(self) -> bool:
         """Checks if there is an Apple on the Board"""
-        return np.max(self.board) <= Board.object_dict["snakehead"]
+        return torch.max(self.board) <= Board.object_dict["snakehead"]
 
     def checkOverlap(self, positions: list) -> bool:
         """Checks if the snake is overlapping with itself"""
@@ -74,7 +74,7 @@ class Board(object):
                 return True
         return False
 
-    def applyPositions(self, positions: list, apple_eaten: bool):
+    def applyPositions(self, positions: list, reset=False):
         """Applies validated positions to gameboard"""
         # reset snake parts on board
         self.board[self.board == Board.object_dict["snake"]] = Board.object_dict["empty"]
@@ -83,8 +83,7 @@ class Board(object):
         for i, p in enumerate(positions):
             x, y = p
             self.setState(x, y, "snake" if i > 0 else "snakehead")
-        # replace apple if eaten
-        if apple_eaten:
+        if reset:
             self.addApple()
 
     def validateMove(self, positions: list) -> str:
@@ -92,9 +91,10 @@ class Board(object):
         output = "none"
         if self.checkOverlap(positions) or self.outOfField(positions):
             return "death"
-        eaten = self.appleEaten()
-        if eaten:
+        self.applyPositions(positions)
+        if self.appleEaten():
+            self.addApple()
             output = "eat"
-        self.applyPositions(positions, eaten)
+        
         return output
         

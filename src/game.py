@@ -1,6 +1,6 @@
 from src.board import Board
 from src.snake import Snake
-import numpy as np
+import torch
 
 class Game(object):
     """ Object of Class Game representing an Instance of the snake Game"""
@@ -32,8 +32,9 @@ class Game(object):
             self.snake.addPart()
         elif event == "death":
             self.restart()
+        return event
 
-    def getGamestate(self) -> np.ndarray:
+    def getGamestate(self) -> torch.tensor:
         """Get Gamestate"""
         return self.board.getState()
 
@@ -41,7 +42,6 @@ class Game(object):
         """Get score of snake"""
         return len(self.snake)
 
-    def inputMove(self, move: np.ndarray):
+    def inputMove(self, move: str):
         """Handles input from AI"""
-        #move = np.argmax(move)[0]
-        self.gameStep(move)
+        return self.gameStep(move)

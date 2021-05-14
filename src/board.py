@@ -14,15 +14,18 @@ class Board(object):
         "apple": 3
     }
 
+
     @staticmethod
     def randomCoordinates(size: int) -> tuple:
         """Returns random coordinates, takes size of game field as input"""
         return randint(0, size-1), randint(0, size-1)
 
+
     @staticmethod
     def createBoard(size) -> torch.tensor:
         """Creates an empty Board"""
         return torch.ones((size, size))
+
 
     def __init__(self, size: int, positions: list):
         """Creates a board object"""
@@ -30,20 +33,24 @@ class Board(object):
         self.size = size
         self.reset(positions)
         
+
     def reset(self, positions: list):
         """Resets the board to a starting state"""
         self.board = Board.createBoard(self.size)
         self.applyPositions(positions, reset=True)
 
+
     def access(self, x: int, y: int) -> torch.tensor:
         """Returns the board value at a specified coordinate"""
         return self.board[y][x]
+
 
     def setState(self, x: int, y: int, obj: str):
         """Sets the board to a specific object at a specified position"""
         obj = obj.lower()
         assert obj in Board.object_dict.keys(), f"Unknown Object \"{obj}\""
         self.board[y][x] = Board.object_dict[obj]
+
 
     def addApple(self):
         """Adds a new apple to the playing field"""
@@ -53,17 +60,21 @@ class Board(object):
             random_x, random_y = Board.randomCoordinates(self.size)
         self.setState(random_x, random_y, "apple")
 
+
     def getState(self) -> torch.tensor:
         """Returns the current state of the board"""
         return self.board
+
 
     def appleEaten(self) -> bool:
         """Checks if there is an Apple on the Board"""
         return torch.max(self.board) <= Board.object_dict["snakehead"]
 
+
     def checkOverlap(self, positions: list) -> bool:
         """Checks if the snake is overlapping with itself"""
         return not (len(set(positions)) == len(positions))
+
 
     def outOfField(self, positions: list) -> bool:
         """Checks if snake is out of field"""
@@ -73,6 +84,7 @@ class Board(object):
             if part_y < 0 or self.size <= part_y:
                 return True
         return False
+
 
     def applyPositions(self, positions: list, reset=False):
         """Applies validated positions to gameboard"""
@@ -86,6 +98,7 @@ class Board(object):
         if reset:
             self.addApple()
 
+
     def validateMove(self, positions: list) -> str:
         """Validates snake move and returns corresponding game event"""
         output = "none"
@@ -95,6 +108,5 @@ class Board(object):
         if self.appleEaten():
             self.addApple()
             output = "eat"
-        
         return output
         

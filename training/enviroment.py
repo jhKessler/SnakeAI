@@ -3,18 +3,22 @@ import torch
 
 class SnakeEnv(object):
 
+
     reward_dict = {
         "death": -1,
         "none": 0,
         "eat": 1
     }
 
+
     def __init__(self, gamesize: int):
         self.gamesize = gamesize
         self.game = Game(size=self.gamesize)
 
+
     def getState(self) -> torch.tensor:
         return self.game.getGamestate()
+
 
     def step(self, action: str):
         """Executes a timestep with the chosen action.\n\n
@@ -33,8 +37,10 @@ class SnakeEnv(object):
         reward = SnakeEnv.reward_dict[reward]
         return previous_state, observation, reward, episode_over
 
+
     def reset(self):
         self.game.restart()
+
 
     def getScore(self) -> int:
         return self.game.getScore()

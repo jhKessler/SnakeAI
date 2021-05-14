@@ -6,25 +6,30 @@ import torch
 class ReplayMemory(object):
     """Class that saves multiple Transitions"""
 
-    def __init__(self, gamma: float):
+
+    def __init__(self, gamma: float, device):
         self.gamma = gamma
         self.memory = []
+        self.device = device
+
 
     def push(self, data: tuple):
         """Save a transition"""
         self.memory.append(data)
 
+
     def reset(self):
         """Deletes the data"""
         self.memory = []
     
+
     def calculate_q_values(self) -> tuple:
         """Calculates q values for all state/action pairs"""
         states, actions, rewards = zip(*self.memory)
-        rewards = torch.FloatTensor(rewards)
+        rewards = torch.FloatTensor(rewards).to(self.device)
 
         # values for calculating q values in form of gamma**i for i = steps the reward is away
-        q_values_coeffs = torch.FloatTensor([self.gamma ** i for i in range(len(rewards))])
+        q_values_coeffs = torch.FloatTensor([self.gamma ** i for i in range(len(rewards))]).to(self.device)
         q_values = []
 
         for i in range(len(states)):
@@ -34,6 +39,7 @@ class ReplayMemory(object):
 
         self.reset()
         return states, actions, q_values
+
 
     def __len__(self) -> int:
         return len(self.memory)

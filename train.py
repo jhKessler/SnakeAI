@@ -14,7 +14,7 @@ GAMMA = 0.99
 N_ACTIONS = 4
 ACTIONS = ["left", "right", "up", "down"]
 GAMESIZE = 20
-TRAINING_EPISODES = 100
+TRAINING_EPISODES = 1000
 LR = 0.001
 
 # dict for converting argmax to action and vice versa
@@ -38,10 +38,11 @@ for episode in range(TRAINING_EPISODES):
     episode_length = 0
     episode_over = False
     current_state = env.getState()
-    
+    episode_score = 1
+
     # play episode of game
     while not episode_over:
-        episode_score = 1
+        
         # determine if action is chosen randomly or if network is allowed to determine it
         epsilon = calculate_eps(EPS_START, EPS_END, EPS_DECAY_STEPS, episode_length)
         take_random_action = random.random() < epsilon

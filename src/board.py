@@ -3,8 +3,8 @@ from random import randint
 
 class Board(object):
     """A Class representing the Gameboard.
-        Objects of type Snake are represented on the board as 1s,
-        Objects of type Apple are represented on the board as 2s
+        Objects of type Snake are represented on the board as 1s (Snakehead as 2),
+        Objects of type Apple are represented on the board as 3s
         Empty Places are represented as 0s"""
 
     object_dict = {

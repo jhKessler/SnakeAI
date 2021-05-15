@@ -14,7 +14,7 @@ class ReplayMemory(object):
 
 
     def push(self, data: tuple):
-        """Save a transition"""
+        """Saves a transition"""
         self.memory.append(data)
 
 

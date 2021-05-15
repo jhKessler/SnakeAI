@@ -14,13 +14,13 @@ class QNetwork(nn.Module):
         self.sig = nn.Sigmoid()
 
         self.layers = nn.ModuleList([
-            nn.Linear(in_features=inp_dim*inp_dim, out_features=1024),
-            nn.BatchNorm1d(num_features=1024),
+            nn.Linear(in_features=inp_dim*inp_dim, out_features=512),
+            nn.BatchNorm1d(num_features=512),
             self.leaky,
-            nn.Linear(in_features=1024, out_features=1024),
-            nn.BatchNorm1d(num_features=1024),
+            nn.Linear(in_features=512, out_features=512),
+            nn.BatchNorm1d(num_features=512),
             self.leaky,
-            nn.Linear(in_features=1024, out_features=outp_dim),
+            nn.Linear(in_features=512, out_features=outp_dim),
             self.sig
             ])
 

@@ -3,15 +3,13 @@ from src.snakepart import SnakePart
 class Snake(object):
     """Object of class Snake"""
 
+    def __len__(self):
+        return len(self.parts)
 
     def __init__(self, x: int, y: int):
         """Creates a Snake Object"""
         start_direction = "right"
         self.parts = [SnakePart(x, y, start_direction)]
-
-
-    def __len__(self):
-        return len(self.parts)
 
 
     def changeDirection(self, new_move: str):
@@ -38,10 +36,7 @@ class Snake(object):
 
     def getPartPositions(self) -> list:
         """Returns positions of every Snakepart"""
-        positions = []
-        for part in self.parts:
-            positions.append(part.getCoordinates())
-        return positions
+        return [part.getCoordinates() for part in self.parts]
 
 
     def addPart(self):
@@ -51,3 +46,4 @@ class Snake(object):
         last_direction = lastPart.direction
         new_x, new_y = SnakePart.calculateMove(last_x, last_y, last_direction, backwards=True)
         self.parts.append(SnakePart(new_x, new_y, last_direction))
+

@@ -8,6 +8,7 @@ class Game(object):
 
     @staticmethod
     def createSnake(x: int, y:int) -> Snake:
+        """returns snake object at coordinates"""
         return Snake(x, y)
 
 

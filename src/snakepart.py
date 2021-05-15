@@ -31,6 +31,7 @@ class SnakePart(object):
 
 
     def move(self):
+        """Moves Snakepart"""
         self.x, self.y = SnakePart.calculateMove(self.x, self.y, self.direction)
     
 

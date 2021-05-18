@@ -5,7 +5,7 @@ class SnakeEnv(object):
 
 
     reward_dict = {
-        "death": -1,
+        "death": 0,
         "none": 0,
         "eat": 1
     }
@@ -28,13 +28,16 @@ class SnakeEnv(object):
                     reward (int): number representing reward after action is taken \n
                     episode_over (boolean): boolean representing whether current game has terminated"""
         previous_state = self.getState()
-
+        previous_distance = self.game.getDistanceToApple()
         reward = self.game.inputMove(action)
         observation = self.getState()
         episode_over = reward == "death"
         if episode_over:
             self.reset()
+            observation = None
         reward = SnakeEnv.reward_dict[reward]
+        if self.game.getDistanceToApple() > previous_distance:
+            reward += 0.1
         return previous_state, observation, reward, episode_over
 
 

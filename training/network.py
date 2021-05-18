@@ -4,24 +4,34 @@ class QNetwork(nn.Module):
     """Neural Network for playing Snake"""
 
 
-    def __init__(self, inp_dim: int, outp_dim: int):
+    def __init__(self, inp_dim: int, outp_dim: int, nodes_per_layer: int):
         """Creates an instance of a Deep QNetwork"""
         super().__init__()
         self.inp_dim = inp_dim
+        self.nodes_per_layer = nodes_per_layer
 
         # activation functions
         self.leaky = nn.LeakyReLU(0.2)
-        self.sig = nn.Sigmoid()
 
         self.layers = nn.ModuleList([
-            nn.Linear(in_features=inp_dim*inp_dim, out_features=512),
-            nn.BatchNorm1d(num_features=512),
+
+            nn.Linear(in_features=inp_dim*inp_dim, out_features=self.nodes_per_layer),
+            nn.BatchNorm1d(num_features=self.nodes_per_layer),
             self.leaky,
-            nn.Linear(in_features=512, out_features=512),
-            nn.BatchNorm1d(num_features=512),
+
+            nn.Linear(in_features=self.nodes_per_layer, out_features=self.nodes_per_layer),
+            nn.BatchNorm1d(num_features=self.nodes_per_layer),
             self.leaky,
-            nn.Linear(in_features=512, out_features=outp_dim),
-            self.sig
+
+            nn.Linear(in_features=self.nodes_per_layer, out_features=self.nodes_per_layer),
+            nn.BatchNorm1d(num_features=self.nodes_per_layer),
+            self.leaky,
+
+            nn.Linear(in_features=self.nodes_per_layer, out_features=self.nodes_per_layer),
+            nn.BatchNorm1d(num_features=self.nodes_per_layer),
+            self.leaky,
+            
+            nn.Linear(in_features=self.nodes_per_layer, out_features=outp_dim),
             ])
 
 

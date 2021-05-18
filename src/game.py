@@ -51,3 +51,7 @@ class Game(object):
     def inputMove(self, move: str):
         """Handles input from AI"""
         return self.gameStep(move)
+
+    
+    def getDistanceToApple(self) -> int:
+        return self.board.getDistanceToApple()

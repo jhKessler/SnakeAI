@@ -26,6 +26,13 @@ class Board(object):
         """Creates an empty Board"""
         return torch.ones((size, size))
 
+    
+    @staticmethod
+    def findObjectOnBoard(board: torch.tensor, obj: str) -> tuple:
+        obj = Board.object_dict[obj]
+        coordinates = tuple((board == 0).nonzero().tolist()[0])
+        return coordinates
+
 
     def __init__(self, size: int, positions: list):
         """Creates a board object"""
@@ -110,3 +117,10 @@ class Board(object):
             output = "eat"
         return output
         
+
+    def getDistanceToApple(self) -> int:
+        """computes Distance between Snake and Apple"""
+        apple_x, apple_y = Board.findObjectOnBoard(self.board, "apple")
+        snakehead_x, snakehead_y = Board.findObjectOnBoard(self.board, "snakehead")
+        distance = abs(apple_x - snakehead_x) + abs(apple_y - snakehead_y)
+        return distance
